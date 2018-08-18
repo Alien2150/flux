@@ -129,6 +129,8 @@ func WriteError(w http.ResponseWriter, r *http.Request, code int, err error) {
 
 func JSONResponse(w http.ResponseWriter, r *http.Request, result interface{}) {
 	body, err := json.Marshal(result)
+	fmt.Println("MARSHALLED")
+	fmt.Println(string(body))
 	if err != nil {
 		ErrorResponse(w, r, err)
 		return

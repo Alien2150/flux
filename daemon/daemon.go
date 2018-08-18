@@ -131,6 +131,8 @@ func (d *Daemon) ListServices(ctx context.Context, namespace string) ([]v6.Contr
 			Policies:   policies.ToStringMap(),
 		})
 	}
+	fmt.Println("STATUS")
+	fmt.Printf("%#v\n", res)
 
 	return res, nil
 }
