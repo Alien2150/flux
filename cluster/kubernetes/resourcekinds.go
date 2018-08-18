@@ -114,8 +114,22 @@ func (dk *deploymentKind) getPodControllers(c *Cluster, namespace string) ([]pod
 	}
 
 	var podControllers []podController
-	for i := range deployments.Items {
-		podControllers = append(podControllers, makeDeploymentPodController(&deployments.Items[i]))
+	for _, item := range deployments.Items {
+		fmt.Println("###")
+		fmt.Println(item.Name)
+		fmt.Println(item.String())
+
+		selector := meta_v1.FormatLabelSelector(item.Spec.Selector)
+		fmt.Println(selector)
+		pods, err := c.client.Pods(namespace).List(meta_v1.ListOptions{LabelSelector: selector})
+		if err != nil {
+			return nil, err
+		}
+		fmt.Println(item.Name)
+		for _, pod := range pods.Items {
+			fmt.Println(pod.Name, pod.String())
+		}
+		podControllers = append(podControllers, makeDeploymentPodController(&item))
 	}
 
 	return podControllers, nil
